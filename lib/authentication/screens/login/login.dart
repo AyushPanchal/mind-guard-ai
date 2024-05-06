@@ -21,24 +21,27 @@ class LoginScreen extends StatelessWidget {
           padding: TSpacingStyle.paddingWithAppBarHeight,
           child: Column(
             children: [
+              const SizedBox(
+                height: TSizes.spaceBtwSections * 2,
+              ),
               //Header
               LoginImageAndTitle(isDarkMode: isDarkMode),
 
               //Form
               const LoginForm(),
 
-              //Divider
-              DividerWithText(
-                isDarkMode: isDarkMode,
-                text: TTexts.orSignInWith,
-              ),
-
-              const SizedBox(
-                height: TSizes.spaceBtwSections,
-              ),
+              // //Divider
+              // DividerWithText(
+              //   isDarkMode: isDarkMode,
+              //   text: TTexts.orSignInWith,
+              // ),
+              //
+              // const SizedBox(
+              //   height: TSizes.spaceBtwSections,
+              // ),
 
               //Footer (Google and FB Login)
-              const SocialButtons()
+              // const SocialButtons()
             ],
           ),
         ),

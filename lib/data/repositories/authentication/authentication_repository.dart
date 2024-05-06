@@ -51,7 +51,7 @@ class AuthenticationRepository extends GetxController {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Center(
-                    child: Text("Email Verified"),
+                    child: Text("Email Verified and signed in"),
                   ),
                   ElevatedButton(
                       onPressed: () =>

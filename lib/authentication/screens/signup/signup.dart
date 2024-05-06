@@ -21,6 +21,9 @@ class SignUpScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(
+                height: TSizes.spaceBtwSections,
+              ),
               //Title
               Text(
                 TTexts.signupTitle,
@@ -32,21 +35,21 @@ class SignUpScreen extends StatelessWidget {
 
               //Form
               SignUpForm(isDarkMode: isDarkMode),
-              const SizedBox(
-                height: TSizes.spaceBtwSections,
-              ),
+              // const SizedBox(
+              //   height: TSizes.spaceBtwSections,
+              // ),
 
-              //Divider
-              DividerWithText(
-                isDarkMode: isDarkMode,
-                text: TTexts.orSignUpWith,
-              ),
-              const SizedBox(
-                height: TSizes.spaceBtwSections,
-              ),
-
-              //Social Buttons FB and Google
-              const SocialButtons(),
+              // //Divider
+              // DividerWithText(
+              //   isDarkMode: isDarkMode,
+              //   text: TTexts.orSignUpWith,
+              // ),
+              // const SizedBox(
+              //   height: TSizes.spaceBtwSections,
+              // ),
+              //
+              // //Social Buttons FB and Google
+              // const SocialButtons(),
             ],
           ),
         ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:mind_guard/authentication/controllers/forget_password/forget_password_controller.dart';
 import 'package:mind_guard/authentication/screens/password_configuration/reset_password.dart';
+import 'package:mind_guard/utils/validators/validation.dart';
 
 import '../../../utils/constants/colors.dart';
 import '../../../utils/constants/sizes.dart';
@@ -13,6 +15,7 @@ class ForgetPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ForgetPasswordController());
     final isDarkMode = THelperFunctions.isDarkMode(context);
     return Scaffold(
       appBar: AppBar(
@@ -48,10 +51,15 @@ class ForgetPassword extends StatelessWidget {
             ),
 
             //Text Field
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: TTexts.email,
-                prefixIcon: Icon(Iconsax.direct_right),
+            Form(
+              key: controller.forgetPasswordFormKey,
+              child: TextFormField(
+                validator: (value) => TValidator.validateEmail(value),
+                controller: controller.email,
+                decoration: const InputDecoration(
+                  labelText: TTexts.email,
+                  prefixIcon: Icon(Iconsax.direct_right),
+                ),
               ),
             ),
             const SizedBox(
@@ -62,9 +70,9 @@ class ForgetPassword extends StatelessWidget {
             SizedBox(
               width: double.maxFinite,
               child: ElevatedButton(
-                onPressed: () => Get.off(
-                  () => const ResetPassword(),
-                ),
+                onPressed: () {
+                  controller.sendPasswordResetEmail();
+                },
                 child: const Text(
                   TTexts.submit,
                 ),
