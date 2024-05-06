@@ -28,72 +28,77 @@ class SignUpController extends GetxController {
   ///Sign up
   //SignUp
   void signup() async {
-    try {
-      //Loading
-      TFullScreenLoader.openLoadingDialog(
-          "As we are processing your information...", TImages.doccerAnimation);
+    //Loading
+    TFullScreenLoader.openLoadingDialog(
+        "As we are processing your information...", TImages.doccerAnimation);
 
-      //Check Internet Connectivity
-      final isConnected = await NetworkManager.instance.isConnected();
-      if (!isConnected) {
-        //Remove Loader
-        TFullScreenLoader.stopLoading();
-        TLoaders.warningSnackBar(
-            title: 'No Internet Connection',
-            message:
-                "You are not connected to the network. Please get connected to proceed.");
-        return;
-      }
+    //Check Internet Connectivity
+    final isConnected = await NetworkManager.instance.isConnected();
+    if (!isConnected) {
+      //Remove Loader
+      TFullScreenLoader.stopLoading();
+      TLoaders.warningSnackBar(
+          title: 'No Internet Connection',
+          message:
+              "You are not connected to the network. Please get connected to proceed.");
+      return;
+    }
 
-      //Form Validation
-      if (!signUpFormKey.currentState!.validate()) {
-        //Remove Loader
-        TFullScreenLoader.stopLoading();
-        return;
-      }
+    //Form Validation
+    if (!signUpFormKey.currentState!.validate()) {
+      //Remove Loader
+      TFullScreenLoader.stopLoading();
+      return;
+    }
 
-      //Privacy Policy Check
-      if (!privacyPolicy.value) {
-        TLoaders.warningSnackBar(
-            title: "Accept Privacy Policy",
-            message:
-                "In order to create account , you must read and accept the Privacy Policy & Terms of use");
-      }
-
-      //Register user in-the Firebase Authentication &save user data in Firebase
-      final userCredential = await AuthenticationRepository.instance
-          .registerWithEmailAndPassword(
-              email.text.trim(), password.text.trim());
-
-      //Save Authenticated user data in firebase firestore
-      final newUser = UserModel(
-          id: userCredential.user!.uid,
-          firstName: firstName.text.trim(),
-          lastName: lastName.text.trim(),
-          userName: userName.text.trim(),
-          email: email.text.trim(),
-          phoneNumber: phoneNumber.text.trim(),
-          profilePicture: "");
-      final userRepository = Get.put(UserRepository());
-      await userRepository.saveUserRecord(newUser);
+    //Privacy Policy Check
+    if (!privacyPolicy.value) {
+      TLoaders.warningSnackBar(
+          title: "Accept Privacy Policy",
+          message:
+              "In order to create account , you must read and accept the Privacy Policy & Terms of use");
 
       //Remove Loader
       TFullScreenLoader.stopLoading();
+    } else {
+      try {
+        //Register user in-the Firebase Authentication &save user data in Firebase
+        final userCredential = await AuthenticationRepository.instance
+            .registerWithEmailAndPassword(
+                email.text.trim(), password.text.trim());
 
-      //Show Success Message
-      TLoaders.succcesSnackBar(
-        title: "Congratulations",
-        message: "Your account has been created. Verify mail to continue",
-      );
+        //Save Authenticated user data in firebase firestore
+        final newUser = UserModel(
+            id: userCredential.user!.uid,
+            firstName: firstName.text.trim(),
+            lastName: lastName.text.trim(),
+            userName: userName.text.trim(),
+            email: email.text.trim(),
+            phoneNumber: phoneNumber.text.trim(),
+            profilePicture: "");
+        final userRepository = Get.put(UserRepository());
+        await userRepository.saveUserRecord(newUser);
 
-      // Move to Verify Email Screen
-      Get.to(() => const VerifyEmailScreen());
-    } catch (e) {
-      //Remove Loader
-      TFullScreenLoader.stopLoading();
+        //Remove Loader
+        TFullScreenLoader.stopLoading();
 
-      //Show error message
-      TLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
+        //Show Success Message
+        TLoaders.succcesSnackBar(
+          title: "Congratulations",
+          message: "Your account has been created. Verify mail to continue",
+        );
+
+        // Move to Verify Email Screen
+        Get.to(() => VerifyEmailScreen(
+              email: email.text.trim(),
+            ));
+      } catch (e) {
+        //Remove Loader
+        TFullScreenLoader.stopLoading();
+
+        //Show error message
+        TLoaders.errorSnackBar(title: "Oh Snap!", message: e.toString());
+      }
     }
   }
 }

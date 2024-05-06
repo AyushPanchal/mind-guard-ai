@@ -1,34 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+import 'package:mind_guard/common/styles/spacing_styles.dart';
+
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/constants/text_strings.dart';
 import '../../../utils/helpers/helper_functions.dart';
-import '../../styles/spacing_styles.dart';
 
 class SuccessScreen extends StatelessWidget {
-  const SuccessScreen(
-      {super.key,
-      required this.image,
-      required this.title,
-      required this.subTitle,
-      required this.onPressed});
-
+  const SuccessScreen({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.subTitle,
+    this.isLottie = false,
+    this.onPressed,
+  });
   final String image, title, subTitle;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
+  final bool isLottie;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        padding: EdgeInsets.zero,
         child: Padding(
           padding: TSpacingStyle.paddingWithAppBarHeight * 2,
           child: Column(
             children: [
-              //Image
-              Image(
-                image: AssetImage(
-                  image,
-                ),
-                width: THelperFunctions.screenWidth() * 0.6,
+              const SizedBox(
+                height: TSizes.spaceBtwSections,
               ),
+              //Image
+              isLottie
+                  ? Lottie.asset(image)
+                  : Image(
+                      width: THelperFunctions.screenWidth() * 0.6,
+                      image: AssetImage(image),
+                    ),
               const SizedBox(
                 height: TSizes.spaceBtwSections,
               ),
@@ -41,11 +50,9 @@ class SuccessScreen extends StatelessWidget {
               const SizedBox(
                 height: TSizes.spaceBtwItems,
               ),
-              Text(
-                subTitle,
-                style: Theme.of(context).textTheme.labelMedium,
-                textAlign: TextAlign.center,
-              ),
+              Text(subTitle,
+                  style: Theme.of(context).textTheme.labelMedium,
+                  textAlign: TextAlign.center),
               const SizedBox(
                 height: TSizes.spaceBtwSections,
               ),
@@ -53,12 +60,14 @@ class SuccessScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: onPressed,
-                  child: const Text(TTexts.tContinue),
-                ),
-              ),
-              const SizedBox(
-                height: TSizes.spaceBtwItems,
+                    onPressed: onPressed,
+                    child: Text(
+                      TTexts.tContinue,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium!
+                          .apply(color: Colors.white),
+                    )),
               ),
             ],
           ),
