@@ -24,6 +24,7 @@ class TTexts {
   static const String firstName = "First Name";
   static const String lastName = "Last Name";
   static const String email = "E-Mail";
+  static const String age = "Age";
   static const String password = "Password";
   static const String newPassword = "New Password";
   static const String username = "Username";
@@ -32,6 +33,7 @@ class TTexts {
   static const String forgetPassword = "Forget Password?";
   static const String signIn = "Sign In";
   static const String createAccount = "Create Account";
+
   static const String orSignInWith = "or sign in with";
   static const String orSignUpWith = "or sign up with";
   static const String iAgreeTo = "I agree to";
