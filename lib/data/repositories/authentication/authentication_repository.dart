@@ -7,9 +7,13 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mind_guard/features/alzhiemer/screen/alzhimer_screen.dart';
+import 'package:mind_guard/features/alzhiemer/screen/patient_details.dart';
+import 'package:mind_guard/features/testing_routes/test_route.dart';
 import '../../../authentication/screens/login/login.dart';
 import '../../../authentication/screens/onboarding/onboarding.dart';
 import '../../../authentication/screens/signup/verify_email.dart';
+import '../../../features/testing_routes/test_image.dart';
 import '../../../utils/exceptions/firebase_auth_exceptions.dart';
 import '../../../utils/exceptions/firebase_exceptions.dart';
 import '../../../utils/exceptions/format_exceptions.dart';
@@ -46,24 +50,13 @@ class AuthenticationRepository extends GetxController {
         //Initialize User specific storage bucket
         // await TLocalStorage.init(user.uid);
 
-        Get.offAll(() => Scaffold(
-              body: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Center(
-                    child: Text("Email Verified and signed in"),
-                  ),
-                  ElevatedButton(
-                      onPressed: () =>
-                          AuthenticationRepository.instance.logout(),
-                      child: const Text("Logout"))
-                ],
-              ),
-            ));
+        Get.offAll(() => const PatientDetailScreen());
       } else {
-        Get.offAll(() => VerifyEmailScreen(
-              email: _auth.currentUser?.email,
-            ));
+        Get.offAll(
+          () => VerifyEmailScreen(
+            email: _auth.currentUser?.email,
+          ),
+        );
       }
     } else {
       //Local Storage
