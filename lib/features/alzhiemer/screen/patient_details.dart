@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mind_guard/common/widgets/appbar/appbar.dart';
-import 'package:mind_guard/data/repositories/authentication/authentication_repository.dart';
 import 'package:mind_guard/features/alzhiemer/controller/patient_detail_controller.dart';
+import 'package:mind_guard/navigation_menu.dart';
 import 'package:mind_guard/utils/constants/sizes.dart';
 
 import '../../../utils/constants/text_strings.dart';
@@ -18,6 +18,8 @@ class PatientDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final PatientDetailsController controller =
         Get.put(PatientDetailsController());
+
+    final navigationController = NavigationController.instance;
     return Scaffold(
       appBar: const TAppBar(
         title: Text("Enter Patient details"),
@@ -28,9 +30,23 @@ class PatientDetailScreen extends StatelessWidget {
           child: Form(
             key: controller.patientDetailFormKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
-                  height: TSizes.spaceBtwSections * 2.5,
+                  height: TSizes.spaceBtwSections,
+                ),
+                if (navigationController.selectedIndex.value == 0)
+                  Text(
+                    "Alzheimer Patient Details",
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                if (navigationController.selectedIndex.value == 1)
+                  Text(
+                    "Brain Tumour Patient Details",
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                const SizedBox(
+                  height: TSizes.spaceBtwSections,
                 ),
                 //Last name and First name text form fields
                 TextFormField(
@@ -146,7 +162,14 @@ class PatientDetailScreen extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      controller.addPatientDetails();
+                      if (navigationController.selectedIndex.value == 0) {
+                        controller.addAlzheimerPatientDetails();
+                        log("Alzheimer patient details added");
+                      }
+                      if (navigationController.selectedIndex.value == 1) {
+                        controller.addBTPatientDetails();
+                        log("BT patient details added");
+                      }
                     },
                     child: const Text(
                       TTexts.submit,

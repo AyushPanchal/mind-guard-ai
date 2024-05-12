@@ -16,6 +16,7 @@ class PatientDetailModel {
   String? patientId;
   String? predictionResult;
   String? gender;
+  String? info;
   String? timeStamp; // New field for storing timestamp
 
   PatientDetailModel({
@@ -28,10 +29,12 @@ class PatientDetailModel {
     this.patientId,
     this.predictionResult,
     this.gender,
+    this.info,
     this.timeStamp, // Include timeStamp in constructor
   });
 
   PatientDetailModel copyWith({
+    String? info,
     String? firstName,
     String? lastName,
     String? age,
@@ -54,6 +57,7 @@ class PatientDetailModel {
         predictionResult: predictionResult ?? this.predictionResult,
         gender: gender ?? this.gender,
         timeStamp: timeStamp ?? this.timeStamp,
+        info: info ?? this.info,
       );
 
   factory PatientDetailModel.fromJson(Map<String, dynamic> json) =>
@@ -67,6 +71,7 @@ class PatientDetailModel {
         patientId: json["patientId"],
         predictionResult: json["predictionResult"],
         gender: json["gender"],
+        info: json["info"],
         timeStamp: json["timeStamp"], // Parse timeStamp from JSON
       );
 
@@ -80,6 +85,7 @@ class PatientDetailModel {
         "patientId": patientId,
         "predictionResult": predictionResult,
         "gender": gender,
+        "info": info,
         "timeStamp": timeStamp, // Include timeStamp in JSON output
       };
 }

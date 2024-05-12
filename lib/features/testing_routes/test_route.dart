@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
 class MessageScreen extends StatefulWidget {
+  const MessageScreen({super.key});
+
   @override
   _MessageScreenState createState() => _MessageScreenState();
 }

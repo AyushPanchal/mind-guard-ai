@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
 class ImageUploadScreen extends StatefulWidget {
+  const ImageUploadScreen({super.key});
+
   @override
   _ImageUploadScreenState createState() => _ImageUploadScreenState();
 }
@@ -50,17 +52,17 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('MRI Image Upload'),
+        title: const Text('MRI Image Upload'),
       ),
       body: Center(
         child: _imageFile != null
             ? Image.file(_imageFile!)
-            : Text('No image selected'),
+            : const Text('No image selected'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _getImageAndUpload,
         tooltip: 'Pick Image',
-        child: Icon(Icons.image),
+        child: const Icon(Icons.image),
       ),
     );
   }

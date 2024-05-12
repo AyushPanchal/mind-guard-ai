@@ -1,16 +1,15 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:mind_guard/utils/constants/api_constants.dart';
 
 class AlzheimerRepository extends GetxController {
   static AlzheimerRepository get instance => Get.find();
 
-  Future<String> uploadImage(File image) async {
-    const url = 'http://192.168.1.4:5000/predict';
+  Future<Map<String, String>> uploadImage(File image) async {
+    const url = '${apiUrl}predict_alzheimer';
 
     var request = http.MultipartRequest('POST', Uri.parse(url));
     request.files.add(await http.MultipartFile.fromPath('image', image.path));
@@ -25,11 +24,18 @@ class AlzheimerRepository extends GetxController {
       log("response body $responseBody");
 
       var predictionResult = jsonDecode(responseBody)["prediction"];
+      var predictionInfo = jsonDecode(responseBody)["info"];
       log('Prediction result: $predictionResult');
-      return predictionResult;
+      return {
+        "predictionResult": predictionResult,
+        "predictionInfo": predictionInfo,
+      };
     } else {
       log('Failed to upload image');
-      return "";
+      return {
+        "predictionResult": "",
+        "predictionInfo": "",
+      };
     }
   }
 }

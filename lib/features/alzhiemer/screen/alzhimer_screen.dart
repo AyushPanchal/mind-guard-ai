@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:mind_guard/common/widgets/appbar/appbar.dart';
 import 'package:mind_guard/common/widgets/custom_shapes/containers/rounded_container.dart';
 import 'package:mind_guard/features/alzhiemer/controller/alzheimer_controller.dart';
+import 'package:mind_guard/features/alzhiemer/screen/alzheimer_result_screen.dart';
 import 'package:mind_guard/utils/constants/sizes.dart';
 
 class AlzheimerScreen extends StatelessWidget {
@@ -29,7 +30,7 @@ class AlzheimerScreen extends StatelessWidget {
                 () => RoundedContainer(
                   height: 208,
                   width: 208,
-                  backgroundColor: Colors.transparent,
+                  backgroundColor: Colors.black,
                   showBorder: true,
                   child: controller.imageFile.value != null
                       ? ClipRRect(
@@ -45,7 +46,15 @@ class AlzheimerScreen extends StatelessWidget {
                 height: TSizes.spaceBtwSections,
               ),
               Obx(
-                () => Text(controller.result.value),
+                () => controller.imageSelected.value
+                    ? Container()
+                    : Text(
+                        "Please select an image to continue",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall!
+                            .copyWith(color: Colors.red),
+                      ),
               ),
               const SizedBox(
                 height: TSizes.spaceBtwSections,
@@ -63,7 +72,7 @@ class AlzheimerScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () => Get.to(() => const AlzheimerResultScreen()),
                   child: const Text("Make Prediction"),
                 ),
               ),

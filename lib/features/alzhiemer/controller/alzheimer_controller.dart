@@ -7,17 +7,21 @@ import 'package:mind_guard/data/repositories/alzhiemer/alzhiemer_repository.dart
 import 'package:mind_guard/data/repositories/authentication/authentication_repository.dart';
 import 'package:mind_guard/data/repositories/patient_details/patient_details_repository.dart';
 import 'package:mind_guard/features/alzhiemer/controller/patient_detail_controller.dart';
-import 'package:mind_guard/features/alzhiemer/model/patient_detail_model.dart';
 
 class AlzheimerController extends GetxController {
+  static AlzheimerController get instance => Get.find();
+
   Rx<File?> imageFile = Rx<File?>(null);
   final AlzheimerRepository _alzheimerRepository = AlzheimerRepository.instance;
   final result = "Upload image".obs;
+  final resultInfo = "Not available".obs;
+  final imageSelected = true.obs;
   final _patientDetailsRepository = PatientDetailsRepository.instance;
   final _authenticationRepository = AuthenticationRepository.instance;
   final _patientDetailController = PatientDetailsController.instance;
 
   Future<void> getImageAndUpload() async {
+    imageSelected.value = false;
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
@@ -27,22 +31,29 @@ class AlzheimerController extends GetxController {
 
     if (pickedFile != null) {
       imageFile.value = File(pickedFile.path);
+      imageSelected.value = true;
       String mriImageUrl = await _patientDetailsRepository
           .uploadImageToStorage(imageFile.value!);
       _patientDetailController.patientDetails =
           _patientDetailController.patientDetails.copyWith(mriUrl: mriImageUrl);
       _patientDetailsRepository
-          .updatePatient(_patientDetailController.patientDetails,
+          .updateAlzheimerPatient(_patientDetailController.patientDetails,
               _authenticationRepository.authUser!.uid)
           .then((value) => log("SuccessFull MRI Image"));
 
       // Upload image to Flask server
-      result.value = await _alzheimerRepository.uploadImage(imageFile.value!);
+      Map<String, String> results =
+          await _alzheimerRepository.uploadImage(imageFile.value!);
+      result.value = results["predictionResult"]!;
+      resultInfo.value = results["predictionInfo"]!;
       _patientDetailController.patientDetails = _patientDetailController
           .patientDetails
           .copyWith(predictionResult: result.value);
+      _patientDetailController.patientDetails = _patientDetailController
+          .patientDetails
+          .copyWith(info: resultInfo.value);
       _patientDetailsRepository
-          .updatePatient(_patientDetailController.patientDetails,
+          .updateAlzheimerPatient(_patientDetailController.patientDetails,
               _authenticationRepository.authUser!.uid)
           .then((value) => log("SuccessFull Prediction Stored"));
     }

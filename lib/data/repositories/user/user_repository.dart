@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../authentication/models/user_model.dart';
+import '../../../features/authentication/models/user_model.dart';
 import '../../../utils/exceptions/firebase_exceptions.dart';
 import '../../../utils/exceptions/format_exceptions.dart';
 import '../../../utils/exceptions/platform_exceptions.dart';
@@ -33,26 +33,16 @@ class UserRepository extends GetxController {
   }
 
   //Fetch user details based on user id
-  Future<UserModel> fetchUserDetails() async {
-    try {
-      final documentSnapshot = await _db
-          .collection("Users")
-          .doc(AuthenticationRepository.instance.authUser?.uid)
-          .get();
-      if (documentSnapshot.exists) {
-        return UserModel.fromSnapshot(documentSnapshot);
+  Stream<UserModel> streamUserDetails() {
+    String? userId = AuthenticationRepository.instance.authUser!.uid;
+
+    return _db.collection('Users').doc(userId).snapshots().map((snapshot) {
+      if (snapshot.exists) {
+        return UserModel.fromSnapshot(snapshot);
       } else {
         return UserModel.empty();
       }
-    } on FirebaseException catch (e) {
-      throw TFirebaseException(e.code).message;
-    } on FormatException catch (_) {
-      throw const TFormatException();
-    } on PlatformException catch (e) {
-      throw TPlatformException(e.code).message;
-    } catch (e) {
-      throw "Something went wrong. Please try again";
-    }
+    });
   }
 
   //Function to update user data in fires tore
