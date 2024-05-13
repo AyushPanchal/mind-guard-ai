@@ -59,6 +59,21 @@ class DepressionRepository extends GetxController {
     }
   }
 
+  Future<void> deleteDepressionPatient(
+      String patientId, String hospitalId) async {
+    try {
+      await _firestore
+          .collection(userCollection)
+          .doc(hospitalId)
+          .collection(depressionCollection)
+          .doc(patientId)
+          .delete();
+    } catch (e) {
+      log('Error deleting patient: $e');
+      rethrow;
+    }
+  }
+
   Future<void> updateDepressionPatient(
       DepressedPatientDetailModel patient, String hospitalId) async {
     try {

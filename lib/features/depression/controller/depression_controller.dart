@@ -166,6 +166,11 @@ class DepressionController extends GetxController {
     }
   }
 
+  deleteDepressionPatientDetails(String patientId) async {
+    _depressionRepository.deleteDepressionPatient(
+        patientId, _authenticationRepository.authUser!.uid);
+  }
+
   submitPatientAnswers() async {
     bool flag = true;
     for (var i = 0; i < patientAnswers.length; i++) {

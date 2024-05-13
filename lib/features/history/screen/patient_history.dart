@@ -42,8 +42,11 @@ class PatientHistoryScreen extends StatelessWidget {
                         child: const Text("Cancel")),
                     ElevatedButton(
                       onPressed: () {
-                        patientController
-                            .deleteAlzheimerPatientDetails(patientID);
+                        isAlzheimer
+                            ? patientController
+                                .deleteAlzheimerPatientDetails(patientID)
+                            : patientController
+                                .deleteBTPatientDetails(patientID);
                         Get.offAll(() => const NavigationMenu());
                       },
                       child: const Padding(

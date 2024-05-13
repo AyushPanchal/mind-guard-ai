@@ -73,6 +73,11 @@ class PatientDetailsController extends GetxController {
     }
   }
 
+  deleteBTPatientDetails(String patientId) async {
+    _patientDetailsRepository.deleteBTPatient(
+        patientId, _authenticationRepository.authUser!.uid);
+  }
+
   Stream<List<PatientDetailModel>> getAlzheimerPatients() {
     return _patientDetailsRepository
         .getAlzheimerPatients(_authenticationRepository.authUser!.uid);

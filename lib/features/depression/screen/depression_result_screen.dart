@@ -24,6 +24,38 @@ class DepressionResultScreen extends StatelessWidget {
           "Results",
           style: Theme.of(context).textTheme.headlineMedium,
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Get.dialog(
+                AlertDialog(
+                  title: const Text("Delete this patient?"),
+                  actions: [
+                    OutlinedButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        child: const Text("Cancel")),
+                    ElevatedButton(
+                      onPressed: () {
+                        controller.deleteDepressionPatientDetails(patientID);
+                        Get.offAll(() => const NavigationMenu());
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: TSizes.defaultSpace),
+                        child: Text("Confirm"),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.delete_forever,
+            ),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
